@@ -1,0 +1,66 @@
+{% extends "pattern.html" %}
+
+  {% block content %}
+    {{ error }}   
+
+    <div class="container ">
+      <div class="row">
+        
+        {% for feed in feedarray %}
+        <div class="col-sm-4" style="margin-bottom: 5px;">
+          <div class="card">
+            <img class="card-img-top" src="{{ feed.img.url }}" alt="Card image cap">
+            <div class="card-body">
+              <h4>{{ feed.name }}</h4>
+              <h5>Состав</h5>
+              <p>{{ feed.composition }}</p>
+              <h5>Пищевая ценность</h5>
+              <p>{{ feed.nutrition }}</p>
+              <h5>Цена</h5>
+              <p>{{ feed.cost }} руб.</p>
+              <a class="btn btn-primary text-light" onclick="add_to_basket({{ feed.id }});">Добавить в корзину</a>
+            </div>
+          </div>
+        </div>
+      
+        {% endfor %}
+        
+      <script>
+        var csrf = '{{ csrf_token }}'
+        $(document).ready(function(){
+          $.get("/api/get_orders_count/",
+          {
+            'csrfmiddlewaretoken': csrf,
+          },
+          function(data,status){
+            var orders_count = data['orders_count'];
+            if (orders_count != '' && orders_count != '0') {
+              $("#badge-counter").show();
+              $("#order-count").html(orders_count);
+            } 
+            // alert(data['error'] + data['orders_count']);
+          });
+        });
+        function add_to_basket(id) {
+          $.post("/api/add_order/",
+          {
+            'id': id,
+            'csrfmiddlewaretoken': csrf,
+          },
+          function(data,status){
+            var orders_count = data['orders_count'];
+            if (orders_count != '' && orders_count != '0') {
+              $("#badge-counter").show();
+              $("#order-count").html(orders_count);
+            } 
+            // alert(data['error'] + data['orders_count']);
+          });
+        }
+      </script>
+      
+      </div>
+    </div>
+
+  {% endblock %}
+
+  
