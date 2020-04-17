@@ -130,7 +130,6 @@ def confirm_all(request):
     return JsonResponse(responseData)
 
 def del_confirmed(request):
-    print(request.POST)
     if request.user.is_authenticated:
         if request.user.is_superuser:
 
@@ -139,7 +138,7 @@ def del_confirmed(request):
 
             error = 'Все норм'
     else:
-        error = 'Вы не зарегистрированы'
+        error = 'Вы не администратор'
 
     responseData = {
         'error': error
