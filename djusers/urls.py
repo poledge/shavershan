@@ -19,6 +19,7 @@ urlpatterns = [
     path('accounts/logout/', logout_view),
     path('api/add_order/', add_order),
     path('api/del_order/', del_order),
+    path('api/del_confirmed/', del_confirmed),
     path('api/confirm_all/', confirm_all),
     path('api/update_order/', update_order),
     path('api/get_orders_count/', get_orders_count),
