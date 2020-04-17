@@ -26,26 +26,47 @@
         {{ customer }}
       </h1>
             
-      {% for confirmed_orders in confirmed_orders_array %}
-        <div class="col-sm-4">
-          <div class="card">
-            <img class="card-img-top" src="{{ confirmed_orders.feed.img.url }}" alt="Card image cap">
-            <div class="card-body">
-              <h4>{{ confirmed_orders.feed.name }}</h4>
-              <h5>Цена</h5>
-              <p>{{ confirmed_orders.feed.cost }} руб.</p>
-              <h5>Количество</h5>
-              <p>{{ confirmed_orders.count }} шт.</p>
+      <div class="container">
+        {% for confirmed_orders in confirmed_orders_array %}
+          <div class="col-sm-4">
+            <div class="card">
+              <img class="card-img-top" src="{{ confirmed_orders.feed.img.url }}" alt="Card image cap">
+              <div class="card-body">
+                <h4>{{ confirmed_orders.feed.name }}</h4>
+                <h5>Цена</h5>
+                <p>{{ confirmed_orders.feed.cost }} руб.</p>
+                <h5>Количество</h5>
+                <p>{{ confirmed_orders.count }} шт.</p>
+              </div>
             </div>
           </div>
-        </div>
-      
-        {% endfor %}
+        
+          {% endfor %}
+      </div>
 
         <div class="card" style="margin: 10px;">
           <h1>Итого</h1>
           <p>{{ final_cost }} руб.</p>
         </div>
+        <div class="text-center">
+          <a class="btn btn-primary text-light" href="#" onclick="del_confirmed({{ customer.id }});">Подтвердить</a>
+        </div>
+
+        <script>
+          var csrf = '{{ csrf_token }}'
+
+          function del_confirmed(id) {
+            $.post("/api/del_confirmed/",
+            {
+              'id': id,
+              'csrfmiddlewaretoken': csrf,
+            },
+            function(data,status){
+              location.reload();
+              // alert(data['error'] + data['orders_count']);
+            });
+          }
+        </script>
 
     </div>
   <script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
