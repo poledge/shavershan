@@ -128,3 +128,21 @@ def confirm_all(request):
     }
 
     return JsonResponse(responseData)
+
+def del_confirmed(request):
+    print(request.POST)
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+
+            customer = User.objects.filter(id = request.POST["id"])[0]
+            order.objects.filter(customer = customer).filter(confirmed = True).delete()
+
+            error = 'Все норм'
+    else:
+        error = 'Вы не зарегистрированы'
+
+    responseData = {
+        'error': error
+    }
+
+    return JsonResponse(responseData)
